@@ -8,8 +8,30 @@ function Navbar() {
                 Mini <span>Blog</span>
             </NavLink>
             <ul className={styles.link_list}>
-                <li><NavLink className={({ isActive }) => (isActive ? styles.active : "")} to="/">Home</NavLink></li>
-                <li><NavLink className={({ isActive }) => (isActive ? styles.active : "")} to="/about">Sobre</NavLink></li>
+                <li>
+                    <NavLink className={
+                        ({ isActive }) =>
+                            (isActive ? styles.active : "")
+                    } to="/">Home</NavLink>
+                </li>
+                <li>
+                    <NavLink className={
+                        ({ isActive }) =>
+                            (isActive ? styles.active : "")
+                    } to="/about">Sobre</NavLink>
+                </li>
+                <li>
+                    <NavLink className={
+                        ({ isActive }) =>
+                            (isActive ? styles.active : "")
+                    } to="/login">Login</NavLink>
+                </li>
+                <li>
+                    <NavLink className={
+                        ({ isActive }) =>
+                            (isActive ? styles.active : "")
+                    } to="/register">Registro</NavLink>
+                </li>
             </ul>
         </nav>
     );
