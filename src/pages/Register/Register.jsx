@@ -1,5 +1,6 @@
 ﻿import styles from './Register.module.css';
 import { useState, useEffect } from 'react';
+import { useAuthentication } from '../../hooks/useAuthentication';
 
 function Register() {
     const [displayName, setDisplayName] = useState("");
@@ -8,7 +9,9 @@ function Register() {
     const [confirmPasswor, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
+    const { createUser, error: authError, loading } = useAuthentication();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setError("");
@@ -23,6 +26,12 @@ function Register() {
             email,
             password
         };
+
+        const res = await createUser(user);
+
+        if (authError) {
+            setError(authError);
+        }
 
         console.log(user);
     };
@@ -77,7 +86,11 @@ function Register() {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </label>
-                    <button className="btn">Cadastrar</button>
+                    {
+                        !loading
+                            ? <button className="btn">Cadastrar</button>
+                            : <button className="btn" disabled>Carregando...</button>
+                    }
                     {error && <p className="error">{error}</p>}
                 </form>
             </div>
