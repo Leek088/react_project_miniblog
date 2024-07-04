@@ -1,6 +1,6 @@
-﻿import styles from './Register.module.css';
-import { useState, useEffect } from 'react';
-import { useAuthentication } from '../../hooks/useAuthentication';
+﻿import styles from "./Register.module.css";
+import { useState, useEffect } from "react";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 function Register() {
     const [displayName, setDisplayName] = useState("");
@@ -24,17 +24,19 @@ function Register() {
         var user = {
             displayName,
             email,
-            password
+            password,
         };
 
         const res = await createUser(user);
 
+        console.log(user);
+    };
+
+    useEffect(() => {
         if (authError) {
             setError(authError);
         }
-
-        console.log(user);
-    };
+    }, [authError])
 
     return (
         <>
@@ -86,11 +88,13 @@ function Register() {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </label>
-                    {
-                        !loading
-                            ? <button className="btn">Cadastrar</button>
-                            : <button className="btn" disabled>Carregando...</button>
-                    }
+                    {!loading ? (
+                        <button className="btn">Cadastrar</button>
+                    ) : (
+                        <button className="btn" disabled>
+                            Carregando...
+                        </button>
+                    )}
                     {error && <p className="error">{error}</p>}
                 </form>
             </div>

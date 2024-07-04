@@ -31,16 +31,16 @@ export const useAuthentication = () => {
         setLoading(true);
         setError(null);
 
-        let user;
+        let userCredential;
 
         try {
-            user = await createUserWithEmailAndPassword(
+            userCredential = await createUserWithEmailAndPassword(
                 auth,
                 data.email,
                 data.password
             );
 
-            await updateProfile(user, {
+            await updateProfile(userCredential.user, {
                 displayName: data.displayName
             });
         }
@@ -55,14 +55,14 @@ export const useAuthentication = () => {
             }
             else {
                 console.log(error.message);
-                systemErrorMessage("Ocorreu um erro, por favor tente mais tarde.");
+                systemErrorMessage = "Ocorreu um erro, por favor tente mais tarde.";
             }
 
             setError(systemErrorMessage);
         }
 
         setLoading(false);
-        return user;
+        return userCredential;
     }
 
     useEffect(() => {
