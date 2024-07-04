@@ -62,7 +62,8 @@ export const useAuthentication = () => {
         }
 
         setLoading(false);
-        return userCredential;
+
+        return userCredential.user;
     }
 
     useEffect(() => {
