@@ -11,9 +11,7 @@
   <ItemGroup>
     <Folder Include="src\components\Navbar\" />
     <Folder Include="src\firebase\" />
-    <Folder Include="src\hooks\" />
-    <Folder Include="src\pages\Dashboard\" />
+    <Folder Include="src\context\" />
     <Folder Include="src\pages\Home\" />
-    <Folder Include="src\pages\CreatePost\" />
   </ItemGroup>
 </Project>

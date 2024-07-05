@@ -1,4 +1,4 @@
-import { db } from '../firebase/config';
+﻿import { db } from '../firebase/config';
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -51,7 +51,7 @@ export const useAuthentication = () => {
                 systemErrorMessage = "A sennha precisa de pelo menos 6 caracters.";
             }
             else if (error.message.includes("email-already")) {
-                systemErrorMessage = "E-mail j� cadastrado.";
+                systemErrorMessage = "E-mail já cadastrado.";
             }
             else {
                 console.log(error.message);
@@ -66,6 +66,40 @@ export const useAuthentication = () => {
         return userCredential.user;
     }
 
+    const logout = () => {
+        checkIfIsCancelled();
+        signOut(auth);
+    };
+
+    const login = async (data) => {
+        checkIfIsCancelled();
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            await signInWithEmailAndPassword(
+                auth,
+                data.email,
+                data.password
+            );
+        } catch (error) {
+            let systemErrorMessage;
+
+            if (error.message.includes("invalid-credential")) {
+                systemErrorMessage = "Usuário ou senha incorreto(s).";
+            }            
+            else {
+                console.log(error.message);
+                systemErrorMessage = "Ocorreu um erro, por favor tente mais tarde.";
+            }
+
+            setError(systemErrorMessage);
+        }
+
+        setLoading(false);
+    };
+
     useEffect(() => {
         return () => setCancelled(true);
     }, []);
@@ -74,6 +108,8 @@ export const useAuthentication = () => {
         auth,
         createUser,
         error,
-        loading
+        loading,
+        logout,
+        login
     }
 };
