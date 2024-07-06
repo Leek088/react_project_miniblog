@@ -1,10 +1,10 @@
-﻿import { useState, useEffect, useReducer } from 'react';
-import { db } from '../firebase/config';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+﻿import { useState, useEffect, useReducer } from "react";
+import { db } from "../firebase/config";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const initialState = {
     loading: false,
-    error: null
+    error: null,
 };
 
 const insertReducer = (state, action) => {
@@ -22,16 +22,17 @@ const insertReducer = (state, action) => {
 
 export const useInsertDocument = (docCollection) => {
     const [response, dispatch] = useReducer(insertReducer, initialState);
+
     const [cancelled, setCancelled] = useState(false);
 
-    const checkCancelBeforeDispath = (action) => {
+    const checkCancelBeforeDispatch = (action) => {
         if (!cancelled) {
             dispatch(action);
         }
     };
 
     const insertDocument = async (document) => {
-        checkCancelBeforeDispath({ type: "LOADING" });
+        checkCancelBeforeDispatch({ type: "LOADING" });
 
         try {
             const newDocument = { ...document, createdAt: Timestamp.now() };
@@ -41,15 +42,18 @@ export const useInsertDocument = (docCollection) => {
                 newDocument
             );
 
-            checkCancelBeforeDispath({ type: "INSERTED_DOC", payload: insertedDocument });
+            checkCancelBeforeDispatch({
+                type: "INSERTED_DOC",
+                payload: insertedDocument,
+            });
         } catch (error) {
-            checkCancelBeforeDispath({ type: "ERROR", payload: error.message });
+            checkCancelBeforeDispatch({ type: "ERROR", payload: error.message });
         }
     };
 
     useEffect(() => {
         return () => setCancelled(true);
-    }, [])
+    }, []);
 
     return { insertDocument, response };
-}
+};

@@ -13,83 +13,79 @@ function CreatePost() {
 
     const user = useAuthValue();
     const { insertDocument, response } = useInsertDocument("posts");
-    console.log(response);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         setFormError("");
 
-        insertDocument({
+        await insertDocument({
             title,
             image,
             body,
-            tags,
+            tags: tags.split(",").map(tag => tag.trim()),
             uid: user.uid,
             createdBy: user.displayName
         });
     };
 
     return (
-        <>
-            <div className={styles.create_post}>
-                <h2>Criar Post</h2>
-                <p>Escreva sobre o que quiser e compartilhe o seu conhecimento!</p>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        <span>Titulo:</span>
-                        <input
-                            type="text"
-                            name="title"
-                            required
-                            placeholder="Pense num bom titulo"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                    </label>
-                    <label>
-                        <span>URL da imagem:</span>
-                        <input
-                            type="text"
-                            name="image"
-                            required
-                            placeholder="Insira a url da imagem"
-                            value={image}
-                            onChange={(e) => setImage(e.target.value)}
-                        />
-                    </label>
-                    <label>
-                        <span>Conteúdo:</span>
-                        <textarea
-                            name="body"
-                            required
-                            placeholder="Insira o conteúdo do post"
-                            value={body}
-                            onChange={(e) => setBody(e.target.value)}
-                        ></textarea>
-                    </label>
-                    <label>
-                        <span>Tags:</span>
-                        <input
-                            type="text"
-                            name="tags"
-                            required
-                            placeholder="Insira as tags, separadas por vírgula"
-                            value={tags}
-                            onChange={(e) => setTags(e.target.value)}
-                        />
-                    </label>
-                    {!response.loading ? (
-                        <button className="btn">Entrar</button>
-                    ) : (
-                        <button className="btn" disabled>
-                            Carregando...
-                        </button>
-                    )}
-                    {response.error && <p className="error">{error}</p>}
-                </form>
-            </div>
-        </>
+        <div className={styles.create_post}>
+            <h2>Criar Post</h2>
+            <p>Escreva sobre o que quiser e compartilhe o seu conhecimento!</p>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    <span>Título:</span>
+                    <input
+                        type="text"
+                        name="title"
+                        required
+                        placeholder="Pense num bom título"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                </label>
+                <label>
+                    <span>URL da imagem:</span>
+                    <input
+                        type="text"
+                        name="image"
+                        required
+                        placeholder="Insira a URL da imagem"
+                        value={image}
+                        onChange={(e) => setImage(e.target.value)}
+                    />
+                </label>
+                <label>
+                    <span>Conteúdo:</span>
+                    <textarea
+                        name="body"
+                        required
+                        placeholder="Insira o conteúdo do post"
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                    ></textarea>
+                </label>
+                <label>
+                    <span>Tags:</span>
+                    <input
+                        type="text"
+                        name="tags"
+                        required
+                        placeholder="Insira as tags, separadas por vírgula"
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
+                    />
+                </label>
+                {!response.loading ? (
+                    <button className="btn">Entrar</button>
+                ) : (
+                    <button className="btn" disabled>
+                        Carregando...
+                    </button>
+                )}
+                {response.error && <p className="error">{response.error}</p>}
+            </form>
+        </div>
     );
 }
 
