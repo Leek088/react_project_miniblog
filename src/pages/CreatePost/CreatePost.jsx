@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthValue } from '../../context/AuthContext';
+import { useInsertDocument } from '../../hooks/useInsertDocument';
 
 function CreatePost() {
     const [title, setTitle] = useState("");
@@ -10,8 +11,23 @@ function CreatePost() {
     const [tags, setTags] = useState([]);
     const [formError, setFormError] = useState("");
 
-    const handleSubmit = (e) => {
+    const user = useAuthValue();
+    const { insertDocument, response } = useInsertDocument("posts");
+    console.log(response);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setFormError("");
+
+        insertDocument({
+            title,
+            image,
+            body,
+            tags,
+            uid: user.uid,
+            createdBy: user.displayName
+        });
     };
 
     return (
@@ -63,6 +79,14 @@ function CreatePost() {
                             onChange={(e) => setTags(e.target.value)}
                         />
                     </label>
+                    {!response.loading ? (
+                        <button className="btn">Entrar</button>
+                    ) : (
+                        <button className="btn" disabled>
+                            Carregando...
+                        </button>
+                    )}
+                    {response.error && <p className="error">{error}</p>}
                 </form>
             </div>
         </>
