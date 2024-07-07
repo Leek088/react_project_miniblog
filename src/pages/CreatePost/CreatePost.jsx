@@ -5,27 +5,76 @@ import { useAuthValue } from '../../context/AuthContext';
 import { useInsertDocument } from '../../hooks/useInsertDocument';
 
 function CreatePost() {
-    const [title, setTitle] = useState("");
-    const [image, setImage] = useState("");
-    const [body, setBody] = useState("");
-    const [tags, setTags] = useState([]);
-    const [formError, setFormError] = useState("");
+    const [inputs, setInputs] = useState(
+        {
+            title: '',
+            image: '',
+            body: '',
+            tags: []
+        }
+    );
+
+    const [errors, setErrors] = useState([]);
 
     const user = useAuthValue();
     const { insertDocument, response } = useInsertDocument("posts");
+    const navigate = useNavigate();
 
+    //atualiza o valor do input correspondente.
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setInputs({ ...inputs, [name]: value });
+    };
+
+    //verifica se os inputs estão preenchidos corretamente 
+    //e armazena os erros em uma lista.
+    const validateInputs = () => {
+        const newErrors = [];
+
+        if (!inputs.title) {
+            newErrors.push('O titulo é obrigatório.');
+        }
+
+        if (!inputs.image) {
+            newErrors.push('A Url da imagem é obrigatório.');
+        }
+        else {
+            try {
+                new URL(inputs.image)
+            } catch (error) {
+                newErrors.push('A Url da imagem é invalida.');
+            }
+        }
+
+        if (!inputs.body) {
+            newErrors.push('O conteúdo é obrigatório.');
+        }
+
+        if (!inputs.tags) {
+            newErrors.push('As tags são obrigatórias.');
+        }
+
+        setErrors(newErrors);
+        return newErrors.length === 0;
+    };
+
+    //impede o envio do formulário se houver erros, 
+    //caso contrario redireciona para "Home"
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormError("");
 
-        await insertDocument({
-            title,
-            image,
-            body,
-            tags: tags.split(",").map(tag => tag.trim()),
-            uid: user.uid,
-            createdBy: user.displayName
-        });
+        if (validateInputs()) {
+            await insertDocument({
+                title: inputs.title,
+                image: inputs.image,
+                body: inputs.body,
+                tags: inputs.tags.split(",").map(tag => tag.trim().toLowerCase()),
+                uid: user.uid,
+                createdBy: user.displayName
+            });
+
+            navigate("/");
+        }
     };
 
     return (
@@ -40,8 +89,8 @@ function CreatePost() {
                         name="title"
                         required
                         placeholder="Pense num bom título"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={inputs.title}
+                        onChange={handleInputChange}
                     />
                 </label>
                 <label>
@@ -51,8 +100,8 @@ function CreatePost() {
                         name="image"
                         required
                         placeholder="Insira a URL da imagem"
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}
+                        value={inputs.image}
+                        onChange={handleInputChange}
                     />
                 </label>
                 <label>
@@ -61,8 +110,8 @@ function CreatePost() {
                         name="body"
                         required
                         placeholder="Insira o conteúdo do post"
-                        value={body}
-                        onChange={(e) => setBody(e.target.value)}
+                        value={inputs.body}
+                        onChange={handleInputChange}
                     ></textarea>
                 </label>
                 <label>
@@ -72,8 +121,8 @@ function CreatePost() {
                         name="tags"
                         required
                         placeholder="Insira as tags, separadas por vírgula"
-                        value={tags}
-                        onChange={(e) => setTags(e.target.value)}
+                        value={inputs.tag}
+                        onChange={handleInputChange}
                     />
                 </label>
                 {!response.loading ? (
@@ -84,6 +133,16 @@ function CreatePost() {
                     </button>
                 )}
                 {response.error && <p className="error">{response.error}</p>}
+                {errors.length > 0 && (
+                    <div>
+                        <h2>Erros:</h2>
+                        <ul className="error">
+                            {errors.map((error, index) => (
+                                <li key={index}>{error}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </form>
         </div>
     );

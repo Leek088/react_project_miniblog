@@ -12,6 +12,5 @@
     <Folder Include="src\components\Navbar\" />
     <Folder Include="src\firebase\" />
     <Folder Include="src\context\" />
-    <Folder Include="src\pages\Home\" />
   </ItemGroup>
 </Project>
