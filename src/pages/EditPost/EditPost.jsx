@@ -1,10 +1,11 @@
-import styles from './CreatePost.module.css';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import styles from './EditPost.module.css';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthValue } from '../../context/AuthContext';
 import { useInsertDocument } from '../../hooks/useInsertDocument';
+import { useFetchDocument } from '../../hooks/useFetchDocument';
 
-function CreatePost() {
+function EditPost() {
     const [inputs, setInputs] = useState(
         {
             title: '',
@@ -14,17 +15,28 @@ function CreatePost() {
         }
     );
 
-    const [errors, setErrors] = useState([]);
-
     const user = useAuthValue();
+    const { id } = useParams();
+    const { document: post, loading } = useFetchDocument("posts", id);
     const { insertDocument, response } = useInsertDocument("posts");
     const navigate = useNavigate();
+    const [errors, setErrors] = useState([]);
+
+    useEffect(() => {
+        setInputs({
+            title: post?.title || '',
+            image: post?.image || '',
+            body: post?.body || '',
+            tags: post?.tags || []
+        });
+    }, [post]);
 
     //atualiza o valor do input correspondente.
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setInputs({ ...inputs, [name]: value });
     };
+
 
     //verifica se os inputs estão preenchidos corretamente 
     //e armazena os erros em uma lista.
@@ -66,6 +78,7 @@ function CreatePost() {
         if (validateInputs()) {
             await insertDocument({
                 title: inputs.title,
+
                 image: inputs.image,
                 body: inputs.body,
                 tags: inputs.tags.split(",").map(tag => tag.trim().toLowerCase()),
@@ -77,10 +90,14 @@ function CreatePost() {
         }
     };
 
+    if (loading) {
+        return <p>Carregando...</p>;
+    }
+
     return (
-        <div className={styles.create_post}>
-            <h2>Criar Post</h2>
-            <p>Escreva sobre o que quiser e compartilhe o seu conhecimento!</p>
+        <div className={styles.edit_post}>
+            <h2>Editar Post</h2>
+            <p>Atualize o post abaixo!</p>
             <form onSubmit={handleSubmit}>
                 <label>
                     <span>Título:</span>
@@ -104,6 +121,8 @@ function CreatePost() {
                         onChange={handleInputChange}
                     />
                 </label>
+                <p className={styles.preview_title}>Preview da imagem atual:</p>
+                <img className={styles.image_preview} src={post?.image} alt={post?.title} />
                 <label>
                     <span>Conteúdo:</span>
                     <textarea
@@ -121,12 +140,12 @@ function CreatePost() {
                         name="tags"
                         required
                         placeholder="Insira as tags, separadas por vírgula"
-                        value={inputs.tag}
+                        value={inputs.tags}
                         onChange={handleInputChange}
                     />
                 </label>
                 {!response.loading ? (
-                    <button className="btn">Criar</button>
+                    <button className="btn">Atualizar</button>
                 ) : (
                     <button className="btn" disabled>
                         Carregando...
@@ -148,4 +167,4 @@ function CreatePost() {
     );
 }
 
-export default CreatePost;
+export default EditPost;

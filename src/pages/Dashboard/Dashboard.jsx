@@ -2,22 +2,21 @@ import styles from './Dashboard.module.css';
 import { Link } from 'react-router-dom';
 import { useAuthValue } from '../../context/AuthContext';
 import { useFetchDocuments } from '../../hooks/useFetchDocuments';
+import { useDeleteDocument } from '../../hooks/useDeleteDocument';
 
 function Dashboard() {
     const user = useAuthValue();
     const uid = user.uid;
+
     const { documents: posts, loading, error } = useFetchDocuments("posts", null, uid);
+    const { deleteDocument, response } = useDeleteDocument("posts");
 
-    const deleteDocument = (id) => {
-
-    }
-
-    if (loading) {
+    if (loading || response.loading) {
         return <p>Carregando...</p>
     }
 
     return (
-        <div>
+        <div className={styles.dashboard}>
             <h2>Dashboard</h2>
             <p>Gerencie seus posts</p>
             {
@@ -25,6 +24,7 @@ function Dashboard() {
                     ? //Se não houver posts
                     (
                         <div className={styles.noposts}>
+                            <p>Não foram encontrados posts</p>
                             <Link to="/posts/create" className="btn">
                                 Criar primeiro post
                             </Link>
@@ -32,17 +32,21 @@ function Dashboard() {
                     )
                     : //Se houver posts
                     (
-                        <div>
+                        <>
+                            <div className={styles.post_header}>
+                                <span>Título</span>
+                                <span>Ações</span>
+                            </div>
                             {
                                 posts && posts.map(
                                     (post, index) => (
-                                        <div key={index}>
+                                        <div key={index} className={styles.post_row}>
                                             <p>{post.title}</p>
                                             <div>
-                                                <Link to={`/posts/${post.id}`} className="btn btn-outline">
+                                                <Link to={`/post/${post.id}`} className="btn btn-outline">
                                                     Ver
                                                 </Link>
-                                                <Link to={`posts/edit/${post.id}`} className="btn btn-outline">
+                                                <Link to={`/post/edit/${post.id}`} className="btn btn-outline">
                                                     Editar
                                                 </Link>
                                                 <button
@@ -56,11 +60,12 @@ function Dashboard() {
                                     )
                                 )
                             }
-                        </div>
+                        </>
                     )
             }
             <div>
                 {error && <p>{error}</p>}
+                {response.error && <p>{response.error}</p>}
             </div>
         </div >
     );
