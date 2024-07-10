@@ -2,10 +2,12 @@ import styles from './EditPost.module.css';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthValue } from '../../context/AuthContext';
-import { useInsertDocument } from '../../hooks/useInsertDocument';
 import { useFetchDocument } from '../../hooks/useFetchDocument';
+import { useUpdateDocument } from '../../hooks/useUpdateDocument';
 
 function EditPost() {
+
+    //Inputs do formulário
     const [inputs, setInputs] = useState(
         {
             title: '',
@@ -15,11 +17,17 @@ function EditPost() {
         }
     );
 
+    //Armazena os dados do usuário
     const user = useAuthValue();
+    //Armazena o id passado pela url
     const { id } = useParams();
+    //Recupera os dados do post, relacionado ao id
     const { document: post, loading } = useFetchDocument("posts", id);
-    const { insertDocument, response } = useInsertDocument("posts");
+    //Recupera a função responsável por atualizar o post
+    const { updateDocument, response } = useUpdateDocument("posts");
+    //Utilizado para redirecionar à dashboard
     const navigate = useNavigate();
+    //Utilizado para armazenar os erros do formulário
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
@@ -31,15 +39,14 @@ function EditPost() {
         });
     }, [post]);
 
-    //atualiza o valor do input correspondente.
+    //armazena o valor do input que está sendo modificado.
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setInputs({ ...inputs, [name]: value });
-    };
+    };    
 
-
-    //verifica se os inputs estão preenchidos corretamente 
-    //e armazena os erros em uma lista.
+    //Verifica se os inputs estão preenchidos corretamente, 
+    //caso contrário, armazena os erros em uma lista.
     const validateInputs = () => {
         const newErrors = [];
 
@@ -70,23 +77,36 @@ function EditPost() {
         return newErrors.length === 0;
     };
 
-    //impede o envio do formulário se houver erros, 
-    //caso contrario redireciona para "Home"
+    //Trata a string das tags, gerando um array
+    const transformarStringEmArray = (valor) => {
+        if (typeof valor === 'string') {
+            const arrayResultado = valor.split(',').map(tag => tag.trim().toLowerCase());
+            const arrayFiltrado = arrayResultado.filter(item => item.trim() !== '');
+            return arrayFiltrado;
+        } else {
+            return valor;
+        }
+    };
+
+    //Impede a atualização do post se houver erros, 
+    //caso contrario, atualiza e redireciona para "Dashboard"
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (validateInputs()) {
-            await insertDocument({
+            const data =
+            {
                 title: inputs.title,
-
                 image: inputs.image,
                 body: inputs.body,
-                tags: inputs.tags.split(",").map(tag => tag.trim().toLowerCase()),
+                tags: transformarStringEmArray(inputs.tags),
                 uid: user.uid,
                 createdBy: user.displayName
-            });
+            };
 
-            navigate("/");
+            await updateDocument(id, data);
+
+            navigate("/dashboard");
         }
     };
 
@@ -148,7 +168,7 @@ function EditPost() {
                     <button className="btn">Atualizar</button>
                 ) : (
                     <button className="btn" disabled>
-                        Carregando...
+                        Atualizando...
                     </button>
                 )}
                 {response.error && <p className="error">{response.error}</p>}

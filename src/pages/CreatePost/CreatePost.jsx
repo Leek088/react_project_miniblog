@@ -26,6 +26,14 @@ function CreatePost() {
         setInputs({ ...inputs, [name]: value });
     };
 
+    const transformarStringEmArray = (valor) => {
+        if (typeof valor === 'string') {
+            const arrayResultado = valor.split(',').map(tag => tag.trim().toLowerCase());
+            const arrayFiltrado = arrayResultado.filter(item => item.trim() !== '');
+            return arrayFiltrado;
+        }
+    };
+
     //verifica se os inputs estão preenchidos corretamente 
     //e armazena os erros em uma lista.
     const validateInputs = () => {
@@ -68,7 +76,7 @@ function CreatePost() {
                 title: inputs.title,
                 image: inputs.image,
                 body: inputs.body,
-                tags: inputs.tags.split(",").map(tag => tag.trim().toLowerCase()),
+                tags: transformarStringEmArray(inputs.tags),
                 uid: user.uid,
                 createdBy: user.displayName
             });

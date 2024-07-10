@@ -9,7 +9,7 @@ function PostDetail({ post }) {
             <p className={styles.createdby}>{post.createdBy}</p>
             <div className={styles.tags}>
                 {
-                    post.tags.map((tag, index) => (
+                   post && post.tags.map((tag, index) => (
                         <p key={index}>
                             <span>#</span>
                             {tag}
