@@ -1,4 +1,4 @@
-body {
+/*body {
     background-color: #f6fcff;
     padding: 0;
     margin: 0;
@@ -30,10 +30,10 @@ nav button {
     a:hover,
     nav button:hover {
         color: #bbb;
-    }
+    }*/
 
 /* form styles */
-form {
+/*form {
     max-width: 40%;
     margin: 0 auto;
 }
@@ -113,4 +113,4 @@ button[disabled] {
     border: 1px solid #f5c6cb;
     padding: 5px;
     border-radius: 5px;
-}
+}*/
