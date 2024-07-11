@@ -1,14 +1,26 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { useAuthValue } from '../../context/AuthContext';
+import { useState } from 'react';
 
 function NewNavbar() {
     const user = useAuthValue();
     const { logout } = useAuthentication();
 
+    const [query, setQuery] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (query) {
+            return navigate(`/search?q=${query}`)
+        }
+    };
+
     return (
 
-        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-2 mt-1">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary mb-2 mt-1">
             <NavLink className="navbar-brand" to="/">
                 Mini <span>Blog</span>
             </NavLink>
@@ -70,9 +82,16 @@ function NewNavbar() {
                         } to="/about">Sobre</NavLink>
                     </li>
                 </ul>
-                <form className="form-inline my-2 my-lg-0">
-                    <input className="form-control mr-sm-2" type="search" placeholder="Search" />
-                    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <form onSubmit={handleSubmit} className="form-inline my-2 my-lg-0">
+                    <input
+                        className="form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search"
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <button className="btn btn-outline-light my-2 my-sm-0"
+                        type="submit">Search
+                    </button>
                 </form>
             </div>
         </nav>
