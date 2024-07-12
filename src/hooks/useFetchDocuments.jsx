@@ -55,7 +55,7 @@ export function useFetchDocuments(docCollection, search = null, uid = null) {
         }
 
         loadData();
-    }, [docCollection, search, cancelled]);
+    }, [docCollection, search, uid, cancelled]);
 
     useEffect(() => {
         return () => setCancelled(true);

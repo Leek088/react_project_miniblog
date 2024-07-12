@@ -79,51 +79,49 @@ function NewLogin() {
         <div className={styles.container_login}>
             <section className="vh-10">
                 <div className="container py-5 h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col-12">
-                            <div className="card shadow-2-strong">
-                                <div className="pt-5 pb-5 text-center">
-                                    <h3 className="mb-5">Entrar</h3>
-                                    <form onSubmit={handleSubmit}>
-                                        <div className="form-group text-left">
-                                            <label>Email</label>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                required
-                                                placeholder="E-mail do usuário"
-                                                value={inputs.email}
-                                                onChange={handleInputChange}
-                                                className="form-control form-control" />
+                    <div className="col-12">
+                        <div className="card shadow-2-strong">
+                            <div className="pt-5 pb-5 text-center">
+                                <h3 className="mb-5">Entrar</h3>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="form-group text-left">
+                                        <label>Email</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            required
+                                            placeholder="E-mail do usuário"
+                                            value={inputs.email}
+                                            onChange={handleInputChange}
+                                            className="form-control form-control" />
+                                    </div>
+                                    <div className="form-group text-left">
+                                        <label>Senha</label>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            autoComplete="off"
+                                            required
+                                            placeholder="Insira a senha"
+                                            value={inputs.password}
+                                            onChange={handleInputChange}
+                                            className="form-control" />
+                                    </div>
+                                    {!loading ? (
+                                        <button className="btn btn-primary btn-lg btn-block">Login</button>
+                                    ) : (
+                                        <button disabled className="btn btn-warning btn-lg btn-block">Carregando...</button>
+                                    )}
+                                    {errors.length > 0 && (
+                                        <div className="mt-2 text-danger">
+                                            <ul className="error">
+                                                {errors && errors.map((error, index) => (
+                                                    <li key={index}>{error}</li>
+                                                ))}
+                                            </ul>
                                         </div>
-                                        <div className="form-group text-left">
-                                            <label>Senha</label>
-                                            <input
-                                                type="password"
-                                                name="password"
-                                                autoComplete="off"
-                                                required
-                                                placeholder="Insira a senha"
-                                                value={inputs.password}
-                                                onChange={handleInputChange}
-                                                className="form-control" />
-                                        </div>
-                                        {!loading ? (
-                                            <button className="btn btn-primary btn-lg btn-block">Login</button>
-                                        ) : (
-                                            <button disabled className="btn btn-warning btn-lg btn-block">Carregando...</button>
-                                        )}
-                                        {errors.length > 0 && (
-                                            <div className="mt-2 text-danger">
-                                                <ul className="error">
-                                                    {errors && errors.map((error, index) => (
-                                                        <li key={index}>{error}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    </form>
-                                </div>
+                                    )}
+                                </form>
                             </div>
                         </div>
                     </div>

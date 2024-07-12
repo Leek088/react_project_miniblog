@@ -1,0 +1,7 @@
+.container_register section {
+    background-color: azure;
+}
+
+    .container_register section .card {
+        border-radius: 1rem;
+    }
