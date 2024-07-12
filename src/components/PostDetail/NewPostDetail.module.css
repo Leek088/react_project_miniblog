@@ -1,0 +1,11 @@
+.post_detail {
+    margin-bottom: 2em;
+    border-radius: 5px;
+    border: solid cadetblue 0.5px;
+    /*color: cadetblue*/
+}
+
+    .post_detail img {
+        width: 355px;
+        height: 240px;
+    }

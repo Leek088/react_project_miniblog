@@ -4,12 +4,17 @@ import { useAuthValue } from '../../context/AuthContext';
 import { useState } from 'react';
 
 function NewNavbar() {
+    //Recupera o usuário, caso esteja logado.
     const user = useAuthValue();
+    //Recupera o metodo para deslogar o usuário.
     const { logout } = useAuthentication();
-
+    //Armazena o valor da pesguisa, para as tags
     const [query, setQuery] = useState("");
+    //Usado para redirecionar à página de busca
     const navigate = useNavigate();
 
+    //Redireciona para a página de busca,
+    //enviando o parametro da pesquisa (formulário)
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -52,9 +57,6 @@ function NewNavbar() {
                                                 (isActive ? "active nav-link" : "nav-link")
                                         } to="/posts/create">Novo post</NavLink>
                                     </li>
-                                    <li className="nav-item">
-                                        <button className="btn text-danger" onClick={logout}>Sair</button>
-                                    </li>
                                 </>
                             )
                             : //Se usuário desconectado
@@ -82,17 +84,22 @@ function NewNavbar() {
                         } to="/about">Sobre</NavLink>
                     </li>
                 </ul>
+                {/*Formulário da pesquisa por tags*/}
                 <form onSubmit={handleSubmit} className="form-inline my-2 my-lg-0">
                     <input
                         className="form-control mr-sm-2"
                         type="search"
-                        placeholder="Search"
+                        placeholder="Pesquisa por tag"
                         onChange={(e) => setQuery(e.target.value)}
                     />
                     <button className="btn btn-outline-light my-2 my-sm-0"
-                        type="submit">Search
+                        type="submit">Pesquisar
                     </button>
-                </form>
+                </form>                
+                {
+                    user && //Se usuário logado
+                    <button className="btn btn-danger" onClick={logout}>Sair</button>
+                }
             </div>
         </nav>
 

@@ -34,8 +34,8 @@ function CreatePost() {
         }
     };
 
-    //verifica se os inputs estão preenchidos corretamente 
-    //e armazena os erros em uma lista.
+    //verifica se os inputs estão preenchidos corretamente, 
+    //caso contrário, armazena os erros em uma lista.
     const validateInputs = () => {
         const newErrors = [];
 

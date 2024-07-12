@@ -1,10 +1,16 @@
-﻿import styles from "./Footer.module.css";
+import styles from "./Footer.module.css";
 
 function Footer() {
     return (
         <footer className={styles.footer}>
-            <h3>Escreva sobre o que você tem interesse!</h3>
-            <p>Mini Blog &copy; 2022</p>
+            <div className="card">
+                <div className="card-body">
+                    <blockquote className="mb-0">
+                        <p>Escreva sobre o que você tem interesse!</p>
+                        <footer className="blockquote-footer">Mini Blog &copy; 2022</footer>
+                    </blockquote>
+                </div>
+            </div>
         </footer>
     );
 }

@@ -16,10 +16,13 @@ import NewNavbar from './components/Navbar/NewNavbar';
 import Footer from './components/Footer/Footer';
 
 //Pages
+/* Olds
 import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
+*/
 import NewHome from './pages/Home/NewHome';
 import About from './pages/About/About';
-import Login from './pages/Login/Login';
+import NewLogin from './pages/Login/NewLogin';
 import Register from './pages/Register/Register';
 import CreatePost from './pages/CreatePost/CreatePost';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -48,18 +51,20 @@ function App() {
             <AuthProvider value={user}>
                 <BrowserRouter>
                     <div className="container">
-                        <NewNavbar />
-                        <Routes>
-                            <Route path="/" element={<NewHome />} />
-                            <Route path="/about" element={<About />} />
-                            <Route path="/post/:id" element={<Post />} />
-                            <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-                            <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
-                            <Route path="/posts/create" element={user ? <CreatePost /> : <Navigate to="/" />} />
-                            <Route path="/post/edit/:id" element={user ? <EditPost /> : <Navigate to="/" />} />
-                            <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
-                            <Route path="/search" element={<Search />} />
-                        </Routes>
+                        <div className="content-wrap">
+                            <NewNavbar />
+                            <Routes>
+                                <Route path="/" element={<NewHome />} />
+                                <Route path="/about" element={<About />} />
+                                <Route path="/post/:id" element={<Post />} />
+                                <Route path="/login" element={user ? <Navigate to="/" /> : <NewLogin />} />
+                                <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+                                <Route path="/posts/create" element={user ? <CreatePost /> : <Navigate to="/" />} />
+                                <Route path="/post/edit/:id" element={user ? <EditPost /> : <Navigate to="/" />} />
+                                <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
+                                <Route path="/search" element={<Search />} />
+                            </Routes>
+                        </div>
                         <Footer />
                     </div>
                 </BrowserRouter>

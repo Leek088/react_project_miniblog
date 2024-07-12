@@ -1,0 +1,7 @@
+.container_login section {
+    background-color: azure;
+}
+
+    .container_login section .card {
+        border-radius: 1rem;
+    }

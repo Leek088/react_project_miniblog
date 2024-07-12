@@ -1,4 +1,8 @@
-/*.container{
-    min-height: 60vh;
-    margin-bottom: 5em;
-}*/
+.container {
+    position: relative;
+    min-height: 90vh;
+}
+
+.content-wrap {
+    padding-bottom: 2.5rem;
+}
