@@ -14,23 +14,17 @@ import { AuthProvider } from './context/AuthContext';
 import NewNavbar from './components/Navbar/NewNavbar';
 import Footer from './components/Footer/Footer';
 
-//Pages
-/* Olds
-import Navbar from './components/Navbar/Navbar';
-import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
-import Dashboard from './pages/Dashboard/Dashboard';
-import Register from './pages/Register/Register';
-*/
+
+//New Pages
 import NewHome from './pages/Home/NewHome';
 import About from './pages/About/About';
 import NewLogin from './pages/Login/NewLogin';
-import CreatePost from './pages/CreatePost/CreatePost';
 import Search from './pages/Search/Search';
-import Post from './pages/Post/Post';
-import EditPost from './pages/EditPost/EditPost';
+import NewPost from './pages/Post/NewPost';
 import NewDashboard from './pages/Dashboard/NewDashboard';
 import NewRegister from './pages/Register/NewRegister';
+import NewCreatePost from './pages/CreatePost/NewCreatePost';
+import NewEditPost from './pages/EditPost/NewEditPost';
 
 function App() {
     const [user, setUser] = useState(undefined);
@@ -58,11 +52,11 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<NewHome />} />
                                 <Route path="/about" element={<About />} />
-                                <Route path="/post/:id" element={<Post />} />
+                                <Route path="/post/:id" element={<NewPost />} />
                                 <Route path="/login" element={user ? <Navigate to="/" /> : <NewLogin />} />
                                 <Route path="/register" element={user ? <Navigate to="/" /> : <NewRegister />} />
-                                <Route path="/posts/create" element={user ? <CreatePost /> : <Navigate to="/" />} />
-                                <Route path="/post/edit/:id" element={user ? <EditPost /> : <Navigate to="/" />} />
+                                <Route path="/posts/create" element={user ? <NewCreatePost /> : <Navigate to="/" />} />
+                                <Route path="/post/edit/:id" element={user ? <NewEditPost /> : <Navigate to="/" />} />
                                 <Route path="/dashboard" element={user ? <NewDashboard /> : <Navigate to="/" />} />
                                 <Route path="/search" element={<Search />} />
                             </Routes>

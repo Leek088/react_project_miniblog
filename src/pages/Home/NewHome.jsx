@@ -17,7 +17,7 @@ function NewHome() {
                 </div>
             </div>
 
-            <div className="card-columns mt-3">
+            <div className="card-group mt-3">
                 {loading && <p>Carregando...</p>}
                 {
                     !loading && posts && posts.map(

@@ -1,0 +1,9 @@
+.card_post{
+    margin-top: 12px;
+}
+
+.card_post img{
+    margin-top: 10px;
+    max-height: auto;
+    max-width: 355px;
+}

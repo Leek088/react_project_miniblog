@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
 
 function NewRegister() {
+
     //Inputs do formulário
     const [inputs, setInputs] = useState(
         {
@@ -125,7 +126,7 @@ function NewRegister() {
                                     </label>
                                 </div>
                                 <div className="form-group">
-                                    <label>Password
+                                    <label>Senha
                                         <input
                                             className="form-control"
                                             type="password"
@@ -137,7 +138,7 @@ function NewRegister() {
                                     </label>
                                 </div>
                                 <div className="form-group">
-                                    <label>Password
+                                    <label>Confirmar senha
                                         <input
                                             className="form-control"
                                             type="password"

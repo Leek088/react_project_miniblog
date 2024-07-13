@@ -1,3 +1,4 @@
+import styles from "./NewNavbar.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthentication } from '../../hooks/useAuthentication';
 import { useAuthValue } from '../../context/AuthContext';
@@ -85,20 +86,20 @@ function NewNavbar() {
                     </li>
                 </ul>
                 {/*Formulário da pesquisa por tags*/}
-                <form onSubmit={handleSubmit} className="form-inline my-2 my-lg-0">
+                <div className={"form-inline my-2 my-lg-0"}>
                     <input
                         className="form-control mr-sm-2"
                         type="search"
                         placeholder="Pesquisa por tag"
                         onChange={(e) => setQuery(e.target.value)}
                     />
-                    <button className="btn btn-outline-light my-2 my-sm-0"
+                    <button onClick={handleSubmit} className="btn btn-outline-light my-2 my-sm-0"
                         type="submit">Pesquisar
                     </button>
-                </form>                
+                </div>
                 {
                     user && //Se usuário logado
-                    <button className="btn btn-danger" onClick={logout}>Sair</button>
+                    <button className="btn btn-danger ml-2" onClick={logout}>Sair</button>
                 }
             </div>
         </nav>

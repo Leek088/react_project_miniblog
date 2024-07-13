@@ -3,7 +3,7 @@ import styles from './NewPostDetail.module.css';
 
 function NewPostDetail({ post }) {
     return (
-        <div className={"card", styles.post_detail}>
+        <div className={styles.post_detail}>
             <Link to={`/post/${post.id}`}>
                 <img className="card-img-top img-fluid img-thumbnail" src={post.image} alt={post.title} />
             </Link>

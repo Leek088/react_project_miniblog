@@ -9,3 +9,15 @@ form {
     max-width: 40%;
     margin: 0 auto;
 }
+
+form input, textarea{
+    min-width: 400px;
+}
+
+form textarea{
+    min-height: 100px;
+}
+
+form label{
+    text-align: left;
+}
